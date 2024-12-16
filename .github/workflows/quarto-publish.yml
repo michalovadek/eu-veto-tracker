@@ -5,6 +5,10 @@ on:
 
 name: Render and Publish
 
+permissions:
+  contents: write
+  pages: write
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -17,6 +21,8 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tinytex: true
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
