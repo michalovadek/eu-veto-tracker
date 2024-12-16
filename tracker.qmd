@@ -1,0 +1,12 @@
+---
+title: "Tracking EU Member States' Vetoes"
+author: "Michal Ovádek"
+format: html
+---
+
+## Test
+
+```{r}
+veto_data <- read.csv("veto_data.csv", sep = ";")
+veto_data
+```
