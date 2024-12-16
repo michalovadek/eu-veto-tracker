@@ -2,11 +2,64 @@
 title: "Tracking EU Member States' Vetoes"
 author: "Michal Ovádek"
 format: html
+execute:
+  echo: false
+  warning: false
+  error: false
 ---
 
-## Test
+```{r setup}
+# packages
+library(dplyr)
+library(ggplot2)
+library(ggiraph)
 
-```{r}
-veto_data <- read.csv("veto_data.csv", sep = ";")
-veto_data
+# data
+veto_data <- read.csv("veto_data.csv", sep = ";") |> 
+  arrange(desc(date_veto))
+
+# add issue id
+veto_data <- veto_data |> 
+  mutate(id_issue = n_distinct(date_veto, issue, issue_country, source),
+         id_veto = 1:n(),
+         .before = 1)
+
+# ggiraph defaults
+css_default_hover <- girafe_css_bicolor(primary = "lightblue", secondary = "darkred")
+
+set_girafe_defaults(
+  opts_hover = opts_hover(css = css_default_hover),
+  opts_zoom = opts_zoom(min = 1, max = 4),
+  opts_tooltip = opts_tooltip(css = "padding:3px;background-color:#333333;color:white;"),
+  opts_sizing = opts_sizing(rescale = TRUE),
+  opts_toolbar = opts_toolbar(saveaspng = FALSE, position = "bottom", delay_mouseout = 5000)
+)
 ```
+
+This page tracks all publicly reported instances of European Union (EU) Member States vetoing joint action. A veto is understood as an instance of a Member State causing common EU action to fail by opposing a measure under a procedure requiring unanimous agreement of all Member States.
+
+Since 1 December 2024 there have been `r nrow(veto_data)` vetoes by `r `length(unique(veto_data$ms_veto))` Member States across `r max(veto_data$id_issue)` issues. This page is updated whenever a new veto is reported. It was created by [Michal Ovádek](https://michalovadek.github.io/). Its source code can be viewed [here](https://github.com/michalovadek/eu-veto-tracker).
+
+```{r mostrecent}
+veto_data |> 
+  slice(1:10) |> 
+  select(date_veto, ms_veto, issue, issue_country, source)
+```
+
+Vetoes by Member State
+
+```{r nvetoesbyms}
+plt <- veto_data |> 
+  count(ms_veto) |> 
+  ggplot() +
+  geom_col_interactive(aes(x = reorder(ms_veto, n), y = n, 
+                           tooltip = n, data_id = ms_veto)) +
+  labs(title = "Number of vetoes by Member State",
+       x = NULL, y = "Total number of vetoes since 1 December 2024") +
+  theme_minimal()
+
+girafe(ggobj = plt)
+```
+
+Vetoes over time
+
