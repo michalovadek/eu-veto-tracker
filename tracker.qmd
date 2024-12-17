@@ -46,11 +46,10 @@ set_girafe_defaults(
 )
 
 # ggplot defaults
-theme_custom <- theme_minimal(base_family = "Arial") +
+theme_custom <- theme_minimal(base_family = "sans") +
   theme(
     plot.background = element_rect(colour = "grey50"),
-    plot.title = element_text(face = "bold"),
-    text = element_text(family = "Arial")
+    plot.title = element_text(face = "bold")
   )
 ```
 
