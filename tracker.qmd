@@ -1,5 +1,6 @@
 ---
 title: "Tracking EU Member States' Vetoes"
+subtitle: "Who and when blocks joint EU action"
 author: "Michal Ovádek"
 format: html
 execute:
@@ -69,13 +70,21 @@ This page tracks all publicly reported instances of European Union (EU) Member S
 
 Since `r start_date`, there have been `r nrow(veto_data)` vetoes by `r length(unique(veto_data$ms_veto))` Member States across `r max(veto_data$id_issue)` issues. This page is updated whenever a new veto is reported. It was created by [Michal Ovádek](https://michalovadek.github.io/). Its source code can be viewed [here](https://github.com/michalovadek/eu-veto-tracker).
 
+Here are the five most recent vetoes:
+
 ```{r mostrecent}
 veto_data |> 
   arrange(desc(date_veto)) |> 
-  slice(1:10) |> 
+  slice(1:5) |> 
   select(date_veto, ms_veto, issue, source) |> 
+  rename(Date = date_veto,
+         Vetoer = ms_veto,
+         Issue = issue,
+         Source = source) |> 
   knitr::kable()
 ```
+
+Hungary has been reported to have vetoed EU action more than any other Member State in recent history.
 
 ```{r vetoesbyms}
 plt <- veto_data |> 
@@ -89,12 +98,14 @@ plt <- veto_data |>
   theme_custom +
   theme(
     panel.grid = element_blank(),
-    panel.grid.major.y = element_line(colour = "grey94"),
+    panel.grid.major.y = element_line(colour = "grey95"),
     axis.text.x.bottom = element_text(face = "bold")
   )
 
 girafe(ggobj = plt)
 ```
+
+Reported vetoes have become more common over time.^[The date of the veto is an approximation of when the negotiation was taking place rather than when the veto was reported.] 
 
 ```{r vetoestime}
 plt <- veto_data |> 
@@ -121,7 +132,7 @@ plt <- veto_data |>
   scale_y_continuous(breaks = 1:nrow(veto_data), expand = c(0, 1)) +
   theme_custom +
   theme(
-    panel.grid = element_line(colour = "grey94"),
+    panel.grid = element_line(colour = "grey95"),
     axis.text.x = element_text(margin = margin(t = 5))
   ) +
   labs(x = NULL, y = "Veto No",
