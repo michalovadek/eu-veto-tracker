@@ -1,3 +1,21 @@
-﻿date_veto;ms_veto;issue;issue_country;source
-2024-12-16;SK;sanctions;GE;https://www.euronews.com/my-europe/2024/12/16/hungary-and-slovakia-veto-eu-sanctions-on-georgian-officials-as-protests-continue
-2024-12-16;HU;sanctions;GE;https://www.euronews.com/my-europe/2024/12/16/hungary-and-slovakia-veto-eu-sanctions-on-georgian-officials-as-protests-continue
+﻿date_veto;ms_veto;issue;issue_country;source;
+2024-12-16;SK;sanctions;GE;https://www.euronews.com/my-europe/2024/12/16/hungary-and-slovakia-veto-eu-sanctions-on-georgian-officials-as-protests-continue;
+2024-12-16;HU;sanctions;GE;https://www.euronews.com/my-europe/2024/12/16/hungary-and-slovakia-veto-eu-sanctions-on-georgian-officials-as-protests-continue;
+2022-12-06;HU;aid;UA;https://www.euractiv.com/section/economy-jobs/news/hungary-vetoes-eu-financial-aid-for-ukraine/;
+2019-02-01;HU;migration;;https://www.euronews.com/my-europe/2019/02/04/hungary-opposes-eu-arab-league-cooperation-due-to-migrant-concerns;
+2020-11-16;HU;budget;;https://www.theguardian.com/world/2020/nov/16/eu-hungary-veto-budget-viktor-orban;
+2020-11-16;PL;budget;;https://www.theguardian.com/world/2020/nov/16/eu-hungary-veto-budget-viktor-orban;
+2023-12-15;HU;aid;UA;https://www.theguardian.com/world/2023/dec/15/hungary-blocks-50bn-in-eu-aid-for-ukraine-hours-after-membership-talks-were-approved;
+2011-12-09;GB;monetary;;https://www.theguardian.com/world/2011/dec/09/david-cameron-blocks-eu-treaty;
+2020-09-21;CY;sanctions;BY;https://www.theguardian.com/world/2020/sep/21/eu-fails-agree-belarus-sanctions-cyprus-blocks-plan;
+2017-06-14;GR;human rights;CN;https://www.theguardian.com/world/2017/jun/18/greece-eu-criticism-un-china-human-rights-record;
+2021-03-26;HU;human rights;CN;https://www.reuters.com/world/asia-pacific/hungary-blocks-eu-statement-criticising-china-over-hong-kong-diplomats-say-2021-04-16/;
+2024-05-27;HU;aid;UA;https://www.euronews.com/my-europe/2024/05/27/it-has-gone-very-far-eu-countries-voice-exasperation-over-hungarys-vetoes-on-ukraine-aid;
+2021-05-20;HU;migration;;https://www.euractiv.com/section/africa/news/hungary-to-block-eus-africa-pacific-trade-and-development-deal/;
+2021-05-18;HU;ceasefire;IL;https://www.euractiv.com/section/global-europe/news/hungary-blocks-eu-declaration-on-israel-palestine-ceasefire/;
+2023-11-10;GR;accession;AL;https://www.ekathimerini.com/news/1224563/greece-sets-up-first-barrier-to-albania/;
+2019-10-18;FR;accession;MK;https://www.bbc.co.uk/news/world-europe-50100201;
+2019-10-18;FR;accession;AL;https://www.bbc.co.uk/news/world-europe-50100201;
+2019-10-18;NL;accession;AL;https://www.bbc.co.uk/news/world-europe-50100201;
+2019-10-18;DK;accession;AL;https://www.bbc.co.uk/news/world-europe-50100201;
+2020-11-17;BG;accession;MK;https://www.theguardian.com/world/2020/nov/17/mind-our-language-bulgaria-blocks-north-macedonias-eu-path;

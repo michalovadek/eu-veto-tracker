@@ -16,50 +16,90 @@ library(ggiraph)
 
 # data
 veto_data <- read.csv("veto_data.csv", sep = ";") |> 
-  arrange(desc(date_veto))
+  arrange(date_veto) |> 
+  select(where(~ !(all(is.na(.)) | all(. == ""))))
 
 # add issue id
 veto_data <- veto_data |> 
-  mutate(id_issue = n_distinct(date_veto, issue, issue_country, source),
-         id_veto = 1:n(),
-         .before = 1)
+  mutate(id_veto = 1:n(),
+         .before = 1) |> 
+  group_by(date_veto, issue, issue_country, source) |> 
+  mutate(id_issue = cur_group_id()) |> 
+  ungroup()
+
+# start date
+start_date <- format(min(as.Date(veto_data$date_veto)), "%d %B %Y")
 
 # ggiraph defaults
-css_default_hover <- girafe_css_bicolor(primary = "lightblue", secondary = "darkred")
+css_default_hover <- girafe_css_bicolor(primary = "#870c87", secondary = "#4679c7")
 
 set_girafe_defaults(
+  #fonts = list(sans = "Helvetica", serif = "Helvetica"),
   opts_hover = opts_hover(css = css_default_hover),
   opts_zoom = opts_zoom(min = 1, max = 4),
-  opts_tooltip = opts_tooltip(css = "padding:3px;background-color:#333333;color:white;"),
+  opts_tooltip = opts_tooltip(css = "padding:3px;background-color:#372b3b;color:white;"),
   opts_sizing = opts_sizing(rescale = TRUE),
   opts_toolbar = opts_toolbar(saveaspng = FALSE, position = "bottom", delay_mouseout = 5000)
 )
+
+# ggplot defaults
+theme_custom <- theme_minimal(base_family = "Arial") +
+  theme(
+    plot.background = element_rect(colour = "grey50"),
+    plot.title = element_text(face = "bold"),
+    text = element_text(family = "Arial")
+  )
 ```
 
-This page tracks all publicly reported instances of European Union (EU) Member States vetoing joint action. A veto is understood as an instance of a Member State causing common EU action to fail by opposing a measure under a procedure requiring unanimous agreement of all Member States.
+This page tracks all publicly reported instances of European Union (EU) Member States vetoing joint action. A veto is understood as an instance of a Member State blocking, temporarily or permanently, common EU action by opposing a measure under a procedure requiring unanimous agreement of all Member States.^[I count every reported instance of a veto being used, even if the same or similar issue already attracted a veto in the past.]
 
-Since 1 December 2024 there have been `r nrow(veto_data)` vetoes by `r `length(unique(veto_data$ms_veto))` Member States across `r max(veto_data$id_issue)` issues. This page is updated whenever a new veto is reported. It was created by [Michal Ovádek](https://michalovadek.github.io/). Its source code can be viewed [here](https://github.com/michalovadek/eu-veto-tracker).
+Since `r start_date`, there have been `r nrow(veto_data)` vetoes by `r length(unique(veto_data$ms_veto))` Member States across `r max(veto_data$id_issue)` issues. This page is updated whenever a new veto is reported. It was created by [Michal Ovádek](https://michalovadek.github.io/). Its source code can be viewed [here](https://github.com/michalovadek/eu-veto-tracker).
 
 ```{r mostrecent}
 veto_data |> 
+  arrange(desc(date_veto)) |> 
   slice(1:10) |> 
-  select(date_veto, ms_veto, issue, issue_country, source)
+  select(date_veto, ms_veto, issue, source)
 ```
 
 Vetoes by Member State
 
-```{r nvetoesbyms}
+```{r vetoesbyms}
 plt <- veto_data |> 
   count(ms_veto) |> 
   ggplot() +
   geom_col_interactive(aes(x = reorder(ms_veto, n), y = n, 
                            tooltip = n, data_id = ms_veto)) +
+  scale_y_continuous(n.breaks = 8) +
   labs(title = "Number of vetoes by Member State",
-       x = NULL, y = "Total number of vetoes since 1 December 2024") +
-  theme_minimal()
+       x = NULL, y = "Total number of vetoes") +
+  theme_custom +
+  theme(panel.grid = element_blank(),
+        panel.grid.major.y = element_line(colour = "grey94"))
 
 girafe(ggobj = plt)
 ```
 
 Vetoes over time
+
+```{r vetoestime}
+plt <- veto_data |> 
+  mutate(tooltip = paste("By: ", ms_veto, "\n",
+                         "On: ", format.Date(date_veto, "%d %B %Y"), "\n",
+                         "Issue: ", issue, "\n",
+                         sep = "")) |> 
+  ggplot(aes(x = as.Date(date_veto), y = id_veto)) +
+  geom_point_interactive(
+    aes(tooltip = tooltip, data_id = id_veto),
+    alpha = 0.6,
+    colour = "#870c87"
+  ) +
+  scale_x_date(date_breaks = "year", date_labels = "%Y") +
+  scale_y_continuous(n.breaks = 10) +
+  theme_custom +
+  labs(x = NULL, y = "Veto No",
+       title = "Vetoes over time")
+
+girafe(ggobj = plt)
+```
 
