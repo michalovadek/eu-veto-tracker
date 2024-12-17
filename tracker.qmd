@@ -30,9 +30,6 @@ veto_data <- veto_data |>
 # start date
 start_date <- format(min(as.Date(veto_data$date_veto)), "%d %B %Y")
 
-# font
-systemfonts::register_font("Arial")
-
 # ggiraph defaults
 css_default_hover <- girafe_css_bicolor(primary = "#870c87", secondary = "#4679c7")
 
