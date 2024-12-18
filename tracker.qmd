@@ -18,14 +18,15 @@ library(ggiraph)
 # data
 veto_data <- read.csv("veto_data.csv", sep = ";") |> 
   arrange(date_veto) |> 
-  select(where(~ !(all(is.na(.)) | all(. == ""))))
+  select(where(~ !(all(is.na(.)) | all(. == "")))) |> 
+  filter(as.Date(date_veto) > as.Date("2011-01-01"))
 
 # add issue id
 veto_data <- veto_data |> 
   mutate(id_veto = 1:n(),
          .before = 1) |> 
   group_by(date_veto, issue, issue_country, source) |> 
-  mutate(id_issue = cur_group_id()) |> 
+  mutate(id_issue = cur_group_id(), .after = 1) |> 
   ungroup()
 
 # start date
@@ -60,7 +61,7 @@ eu_colors <- data.frame(
   hex_color = c("#ED2939", "#FAE042", "#00966E", "#FF0000", "#DFAF2C",
                 "#11457E", "#D1001F", "#0072CE", "#003580", "#0055A4", 
                 "#FFCE00", "#0D5EAF", "#436F4D", "#169B62", "#009246",
-                "#990000", "#FDB913", "#00A1DE", "#C8102E", "#21468B",
+                "#990000", "#FDB913", "#00A1DE", "#C8102E", "#FF4F00",
                 "#DC143C", "#FF0000", "#002B7F", "#0B4EA2", "#009B77", 
                 "#AA151B", "#FECC00", "#00247D")
 )
@@ -70,7 +71,7 @@ This page tracks all publicly reported instances of European Union (EU) Member S
 
 Since `r start_date`, there have been `r nrow(veto_data)` vetoes by `r length(unique(veto_data$ms_veto))` Member States across `r max(veto_data$id_issue)` issues. This page is updated whenever a new veto is reported. It was created by [Michal Ovádek](https://michalovadek.github.io/). Its source code can be viewed [here](https://github.com/michalovadek/eu-veto-tracker).
 
-Here are the five most recent vetoes:
+The following are the five most recent vetoes:
 
 ```{r mostrecent}
 veto_data |> 
@@ -84,7 +85,7 @@ veto_data |>
   knitr::kable()
 ```
 
-Hungary has been reported to have vetoed EU action more than any other Member State in recent history.
+Hungary has been reported to have vetoed EU action more than any other Member State in recent history. In contrast, most Member States have not had a veto attributed to them. By relying on reported vetoes only, this statistic likely underestimates the true prevalence of vetoes. Another source of underestimation are long-standing vetoes: certain issues might not even be put on the Council agenda -- and are therefore less likely to be reported -- when one or several countries had vetoed the policy in question in the past.^[An example here is the opening of accession negotiations between the EU and (Northern) Macedonia, which was blocked by Greece for over a decade until a dispute over the country's name was resolved.]
 
 ```{r vetoesbyms}
 plt <- veto_data |> 
@@ -105,7 +106,9 @@ plt <- veto_data |>
 girafe(ggobj = plt)
 ```
 
-Reported vetoes have become more common over time.^[The date of the veto is an approximation of when the negotiation was taking place rather than when the veto was reported.] 
+Reported vetoes have become more common over time.^[The date of the veto is an approximation of when the negotiation was taking place rather than when the veto was reported.] Some would argue this is a signal of increasing polarization in the Council of the EU. But changes to the EU's institutional system also play a role. Notably, the creation of the office of the High Representative for Foreign and Security Affairs by the Lisbon Treaty has generated more opportunities for Member States to veto joint EU statements on foreign policy issues.
+
+This is also a reminder that not all vetoes are the same -- blocking a legislative measure such as the harmonization of minimum corporate tax is arguably much more consequential than the wording of a non-binding declaration.
 
 ```{r vetoestime}
 plt <- veto_data |> 
@@ -141,3 +144,7 @@ plt <- veto_data |>
 
 girafe(ggobj = plt)
 ```
+
+When trying to interpret these data, one should be wary of the possibility that differences over time and between Member States are to some extent driven by how vetoes are communicated and reported.
+
+Moreover, whether countries choose to exercise a veto power can also be a function of other Member States' intentions to do the same. If Member State A knows for certain that Member State B will veto a measure, it can reap the 'benefit' of the failed action without contributing to it (free-riding). The number of reported vetoes therefore understates the true level of disagreement among Member States.
