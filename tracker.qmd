@@ -47,7 +47,7 @@ set_girafe_defaults(
 # ggplot defaults
 theme_custom <- theme_minimal(base_family = "sans") +
   theme(
-    plot.background = element_rect(colour = "grey50"),
+    #plot.background = element_rect(colour = "grey50"),
     plot.title = element_text(face = "bold"),
     plot.subtitle = element_text(face = "italic"),
     plot.caption = element_text(face = "italic", size = 7)
