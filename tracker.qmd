@@ -135,7 +135,7 @@ plt <- veto_data |>
   scale_y_continuous(breaks = 1:nrow(veto_data), expand = c(0, 1)) +
   theme_custom +
   theme(
-    panel.grid = element_line(colour = "grey95"),
+    panel.grid = element_line(colour = "grey95", linewidth = 0.2),
     axis.text.x = element_text(margin = margin(t = 5))
   ) +
   labs(x = NULL, y = "Veto No",
