@@ -14,5 +14,5 @@ Michal Ovádek, 'EU Veto Tracker' (2025) <https://michalovadek.github.io/eu-veto
     title = {EU Veto Tracker},
     url = {https://michalovadek.github.io/eu-veto-tracker/},
     year = {2025}
-    }
+}
 ```

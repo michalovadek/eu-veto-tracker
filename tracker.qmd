@@ -136,7 +136,8 @@ plt <- veto_data |>
   theme_custom +
   theme(
     panel.grid = element_line(colour = "grey95", linewidth = 0.2),
-    axis.text.x = element_text(margin = margin(t = 5))
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(size = 6)
   ) +
   labs(x = NULL, y = "Veto No",
        title = "Vetoes over time",
@@ -148,3 +149,32 @@ girafe(ggobj = plt)
 When trying to interpret these data, one should be wary of the possibility that differences over time and between Member States are to some extent driven by how vetoes are communicated and reported.
 
 Moreover, whether countries choose to exercise a veto power can also be a function of other Member States' intentions to do the same. If Member State A knows for certain that Member State B will veto a measure, it can reap the 'benefit' of the failed action without contributing to it (free-riding). The number of reported vetoes therefore understates the true level of disagreement among Member States.
+
+```{r issues}
+plt <- veto_data |> 
+  mutate(issue_country = ifelse(issue_country == "", "No third country", issue_country)) |> 
+  count(issue, issue_country) |> 
+  mutate(sum = sum(n), .by = issue) |> 
+  mutate(tooltip = ifelse(issue_country == "No third country", 
+                          paste(n, " vetoes concerning ", issue, sep = ""),
+                          paste(n, " vetoes concerning ", issue, " and ", issue_country, sep = "")),
+         id = 1:n()) |> 
+  ggplot(aes(x = n, y = reorder(issue, sum))) +
+  geom_col_interactive(aes(fill = issue_country, tooltip = tooltip, data_id = id), show.legend = FALSE) +
+  scale_fill_brewer_interactive(palette = "Paired", type = "qual") +
+  scale_x_continuous(expand = c(0, 0.1)) +
+  theme_custom +
+  theme(
+    panel.grid = element_line(colour = "grey95", linewidth = 0.2),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 0))
+  ) +
+  labs(x = NULL, y = NULL,
+       title = "Veto issues and third countries",
+       subtitle = "Number of times a veto related to an issue",
+       caption = "Hover for information about the third country")
+
+girafe(ggobj = plt)
+```
+
+We can also categorize the vetoes by what substantive issue they concerned and -- because vetoes are frequently about foreign affairs -- the third country in question. The figure above does precisely that. Multiple vetoes have related to progress in negotiating the accession of a candidate country outside the EU. Not all vetoes are directly linked to a third country; this is especially true when it comes to internal policies such as taxation.
