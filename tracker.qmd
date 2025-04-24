@@ -14,6 +14,15 @@ execute:
 library(dplyr)
 library(ggplot2)
 library(ggiraph)
+library(gdtools)
+library(gfonts)
+
+# seed
+set.seed(35239)
+
+# fonts
+register_gfont("Open Sans")
+addGFontHtmlDependency(family = "Open Sans")
 
 # data
 veto_data <- read.csv("veto_data.csv", sep = ";") |> 
@@ -36,7 +45,7 @@ start_date <- format(min(as.Date(veto_data$date_veto)), "%d %B %Y")
 css_default_hover <- girafe_css_bicolor(primary = "#870c87", secondary = "#4679c7")
 
 set_girafe_defaults(
-  fonts = list(sans = "Arial"),
+  fonts = list(sans = "Open Sans"),
   opts_hover = opts_hover(css = css_default_hover),
   opts_zoom = NULL,
   opts_tooltip = opts_tooltip(css = "padding:3px;background-color:#372b3b;color:white;"),
