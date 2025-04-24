@@ -9,7 +9,7 @@ execute:
   error: false
 ---
 
-```{r setup}
+```{r setup, include=FALSE}
 # packages
 library(dplyr)
 library(ggplot2)
@@ -112,7 +112,8 @@ plt <- veto_data |>
     axis.text.x.bottom = element_text(face = "bold")
   )
 
-girafe(ggobj = plt)
+girafe(ggobj = plt,
+       fonts = list(sans = "Open Sans"))
 ```
 
 Reported vetoes have become more common over time.^[The date of the veto is an approximation of when the negotiation was taking place rather than when the veto was reported.] Some would argue this is a signal of increasing polarization in the Council of the EU. But changes to the EU's institutional system also play a role. Notably, the creation of the office of the High Representative for Foreign and Security Affairs by the Lisbon Treaty has generated more opportunities for Member States to veto joint EU statements on foreign policy issues.
@@ -152,7 +153,8 @@ plt <- veto_data |>
        title = "Vetoes over time",
        caption = "Hover for more information about the veto")
 
-girafe(ggobj = plt)
+girafe(ggobj = plt,
+       fonts = list(sans = "Open Sans"))
 ```
 
 When trying to interpret these data, one should be wary of the possibility that differences over time and between Member States are to some extent driven by how vetoes are communicated and reported.
@@ -183,7 +185,8 @@ plt <- veto_data |>
        subtitle = "Number of times a veto related to an issue",
        caption = "Hover for information about the third country")
 
-girafe(ggobj = plt)
+girafe(ggobj = plt,
+       fonts = list(sans = "Open Sans"))
 ```
 
 We can also categorize the vetoes by what substantive issue they concerned and -- because vetoes are frequently about foreign affairs -- the third country in question. The figure above does precisely that. Multiple vetoes have related to progress in negotiating the accession of a candidate country outside the EU. Not all vetoes are directly linked to a third country; this is especially true when it comes to internal policies such as taxation.
